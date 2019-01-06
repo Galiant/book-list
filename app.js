@@ -9,7 +9,7 @@ function Book(title, author, isbn) {
 function UI() {}
 
 // Add boo to list
-UI.prototype.addBookToList = function (book) {
+UI.prototype.addBookToList = function(book) {
   const list = document.getElementById('book-list');
   // Create tr element
   const row = document.createElement('tr');
@@ -22,10 +22,10 @@ UI.prototype.addBookToList = function (book) {
   `;
 
   list.appendChild(row);
-}
+};
 
 // Show alert
-UI.prototype.showAlert = function (message, className) {
+UI.prototype.showAlert = function(message, className) {
   // Create div
   const div = document.createElement('div');
   // Add classes
@@ -38,20 +38,27 @@ UI.prototype.showAlert = function (message, className) {
   // Insert alert
   container.insertBefore(div, form);
   // Timeout after 3 sec
-  setTimeout(function () {
+  setTimeout(function() {
     document.querySelector('.alert').remove();
   }, 3000);
-}
+};
+
+// Delete book
+UI.prototype.deleteBook = function(target) {
+  if (target.className === 'delete') {
+    target.parentElement.parentElement.remove();
+  }
+};
 
 // Clear fields
-UI.prototype.clearFields = function () {
+UI.prototype.clearFields = function() {
   document.getElementById('title').value = '';
   document.getElementById('author').value = '';
   document.getElementById('isbn').value = '';
-}
+};
 
-// Event listeners
-document.getElementById('book-form').addEventListener('submit', function (e) {
+// Event listener for add book
+document.getElementById('book-form').addEventListener('submit', function(e) {
   // Get form values
   const title = document.getElementById('title').value,
     author = document.getElementById('author').value,
@@ -77,6 +84,19 @@ document.getElementById('book-form').addEventListener('submit', function (e) {
     // Clear fields
     ui.clearFields();
   }
+
+  e.preventDefault();
+});
+
+// Event listener for delete
+document.getElementById('book-list').addEventListener('click', function(e) {
+  // Instantiate UI
+  const ui = new UI();
+
+  ui.deleteBook(e.target);
+
+  //Show message
+  ui.showAlert('Book Removed!', 'success');
 
   e.preventDefault();
 });
